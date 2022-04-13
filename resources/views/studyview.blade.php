@@ -1,22 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Laravel demo</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+@extends('layouts.main')
 
-<!-- jQuery library -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@section('contentt')
 
-<!-- Popper JS -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
 
 @if(session('success'))
 	{{session('success')}}
@@ -44,6 +29,49 @@
 		</button>
 		<br/><br/>
 
+
+		<table >
+			<tr>
+				<th>SR</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Mobile</th>
+				<th>Gender</th>
+				<th>Hobby</th>
+				<th>Company</th>
+				<th>Profile</th>
+				<th>City</th>
+				<th>Address</th>
+				<th>Action</th>
+
+			</tr>
+			@php
+			$c=1;
+			@endphp
+			@foreach($data as $value)
+			<tr>
+				<td>{{$c++}}</td>
+				<td>{{$value->name}}</td>
+				<td>{{$value->email}}</td>
+				<td>{{$value->mobile}}</td>
+				<td>{{$value->gender}}</td>
+				<td>{{$value->hobby}}</td>
+				<td>{{$value->companyname}}</td>
+				<td><img src="{{asset('upload/'.$value->profile)}}" height="50" width="50" /></td>
+				<td>{{$value->city}}</td>
+				<td>{{$value->address}}</td>
+				<td>
+					<a  type="button" class="btn btn-primary" id="myBtn" onclick="edit_data('{{$value->id}}')">Edit</a>
+					<a  type="button" class="btn btn-primary" id="myBtn" onclick="testAjax({{$value->id}})">Ajax</a>
+					<a href="/delete_data/{{$value->id}}" onclick="return confirm('Are you sure you want to delete this ?')">Delete</a>
+					
+				</td>
+			</tr>
+
+			@endforeach
+
+		</table> 
+		{{ $data->links() }}
 		<!-- The Modal -->
 		<div class="modal fade" id="myModal">
 			<div class="modal-dialog">
@@ -99,46 +127,11 @@
 		</div>
 
 
-		<table border="2">
-			<tr>
-				<th>SR</th>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Mobile</th>
-				<th>Gender</th>
-				<th>Hobby</th>
-				<th>Company</th>
-				<th>Profile</th>
-				<th>City</th>
-				<th>Address</th>
-				<th>Action</th>
 
-			</tr>
-			@php
-			$c=1;
-			@endphp
-			@foreach($data as $value)
-			<tr>
-				<td>{{$c++}}</td>
-				<td>{{$value->name}}</td>
-				<td>{{$value->email}}</td>
-				<td>{{$value->mobile}}</td>
-				<td>{{$value->gender}}</td>
-				<td>{{$value->hobby}}</td>
-				<td>{{$value->companyname}}</td>
-				<td><img src="{{asset('upload/'.$value->profile)}}" height="50" width="50" /></td>
-				<td>{{$value->city}}</td>
-				<td>{{$value->address}}</td>
-				<td>
-					<a  type="button" class="btn btn-primary" id="myBtn" onclick="edit_data('{{$value->id}}')">Edit</a>
-					<a href="/delete_data/{{$value->id}}" onclick="return confirm('Are you sure you want to delete this ?')">Delete</a>
-				</td>
-			</tr>
+	<div id="editformTest">
 
-			@endforeach
+	</div>
 
-		</table> 
-		{{ $data->links() }}
 	</div>
 </body>
 
@@ -192,6 +185,31 @@ $(document).ready(function(){
 //     $("#myModal").modal();
 //   });
 });
+
+
+
+function testAjax(id_test)
+{
+  $.ajax({
+      url: "{{route('testFunction')}}",
+      type: 'POST',
+      data: {
+        key_id:id_test,
+        _token:'{{ csrf_token() }}'
+      },
+         success: function(response){
+          console.log(response);
+        //   alert(response);
+		  $("#editformTest").html(response);
+        //   customLoadAndShowMSG("success",response);
+      }
+  });
+}
 </script>
-</html>
+
+
+
+
+@endsection
+
 

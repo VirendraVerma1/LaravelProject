@@ -31,6 +31,10 @@ Route::get('edit_data/{id}','StudyController@edit_data');
 Route::post('update_data/{id}','StudyController@update_data');
 Route::get('delete_data/{id}','StudyController@delete_data');
 
+
+Route::post('testFunction','StudyController@testFunction')->name('testFunction');
+
+
 include('auth.php');
 
 Route::get('/home', 'HomeController@index')->name('home');
