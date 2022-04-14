@@ -19,7 +19,7 @@ class StudyController extends Controller
         $data['single_data'] = DB::table('employees')->where('id',$request->key_id)->first();
         $data['company_data'] = DB::table('companys')->get();
         // return view('editview',$data);
-        return test_get_mul(2,3);
+        return getMyText(4,6);
     }
     
     public function show()
